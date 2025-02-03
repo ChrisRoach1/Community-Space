@@ -19,7 +19,8 @@ export const Route = createFileRoute('/signIn')({
 })
 
 function RouteComponent() {
-
+  const navigate = useNavigate() 
+  const { toast } = useToast()
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -28,8 +29,7 @@ function RouteComponent() {
     },
   })
 
-  const navigate = useNavigate() 
-  const { toast } = useToast()
+
 
   const signIn = async (values: z.infer<typeof signInSchema>) => {
     let email = values.email;

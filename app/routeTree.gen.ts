@@ -16,8 +16,6 @@ import { Route as SpaceAddImport } from './routes/space-add'
 import { Route as SignUpImport } from './routes/signUp'
 import { Route as SignInImport } from './routes/signIn'
 import { Route as PostsImport } from './routes/posts'
-import { Route as DeferredImport } from './routes/deferred'
-import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as SpacesIndexImport } from './routes/spaces.index'
 import { Route as PostsIndexImport } from './routes/posts.index'
@@ -53,17 +51,6 @@ const SignInRoute = SignInImport.update({
 const PostsRoute = PostsImport.update({
   id: '/posts',
   path: '/posts',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DeferredRoute = DeferredImport.update({
-  id: '/deferred',
-  path: '/deferred',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const LayoutRoute = LayoutImport.update({
-  id: '/_layout',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -106,20 +93,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/_layout': {
-      id: '/_layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof LayoutImport
-      parentRoute: typeof rootRoute
-    }
-    '/deferred': {
-      id: '/deferred'
-      path: '/deferred'
-      fullPath: '/deferred'
-      preLoaderRoute: typeof DeferredImport
       parentRoute: typeof rootRoute
     }
     '/posts': {
@@ -215,8 +188,6 @@ const SpacesRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '': typeof LayoutRoute
-  '/deferred': typeof DeferredRoute
   '/posts': typeof PostsRouteWithChildren
   '/signIn': typeof SignInRoute
   '/signUp': typeof SignUpRoute
@@ -230,8 +201,6 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '': typeof LayoutRoute
-  '/deferred': typeof DeferredRoute
   '/signIn': typeof SignInRoute
   '/signUp': typeof SignUpRoute
   '/space-add': typeof SpaceAddRoute
@@ -244,8 +213,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/_layout': typeof LayoutRoute
-  '/deferred': typeof DeferredRoute
   '/posts': typeof PostsRouteWithChildren
   '/signIn': typeof SignInRoute
   '/signUp': typeof SignUpRoute
@@ -261,8 +228,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | ''
-    | '/deferred'
     | '/posts'
     | '/signIn'
     | '/signUp'
@@ -275,8 +240,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | ''
-    | '/deferred'
     | '/signIn'
     | '/signUp'
     | '/space-add'
@@ -287,8 +250,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/_layout'
-    | '/deferred'
     | '/posts'
     | '/signIn'
     | '/signUp'
@@ -303,8 +264,6 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LayoutRoute: typeof LayoutRoute
-  DeferredRoute: typeof DeferredRoute
   PostsRoute: typeof PostsRouteWithChildren
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
@@ -315,8 +274,6 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LayoutRoute: LayoutRoute,
-  DeferredRoute: DeferredRoute,
   PostsRoute: PostsRouteWithChildren,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
@@ -336,8 +293,6 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_layout",
-        "/deferred",
         "/posts",
         "/signIn",
         "/signUp",
@@ -348,12 +303,6 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/_layout": {
-      "filePath": "_layout.tsx"
-    },
-    "/deferred": {
-      "filePath": "deferred.tsx"
     },
     "/posts": {
       "filePath": "posts.tsx",

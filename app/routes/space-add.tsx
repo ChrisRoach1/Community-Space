@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createFileRoute, Navigate, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Button } from '~/components/ui/button'
@@ -7,6 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '~/components/ui/input'
 import { TagInput } from '~/components/ui/tagInput'
 import { createSpace, createSpaceSchema } from '~/data/actions'
+import { useToast } from '~/hooks/use-toast'
 import { authClient } from '~/lib/auth-client'
 
 
@@ -17,12 +18,13 @@ export const Route = createFileRoute('/space-add')({
 
 function RouteComponent() {
   const { data: session, isPending, error } = authClient.useSession();
+  const { toast } = useToast()
   const navigate = useNavigate() 
   const form = useForm<z.infer<typeof createSpaceSchema>>({
     resolver: zodResolver(createSpaceSchema),
     defaultValues: {
       name: "",
-      tags: "",
+      tags: [],
     },
   })
 
@@ -34,7 +36,11 @@ function RouteComponent() {
     await createSpace({ data: values }).then(result =>{
       navigate({to: "/spaces"})
     }).catch(error =>{
-
+      toast({
+        title: 'Error',
+        description: `${error?.message}`,
+        variant: 'destructive',
+      })
     })
   }
 

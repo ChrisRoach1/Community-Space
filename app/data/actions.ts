@@ -9,7 +9,7 @@ import { auth } from '~/lib/auth'
 
 export const createSpaceSchema = z.object({
   name: z.string().min(5),
-  tags: z.string()
+  tags: z.array(z.string())
 })
 
 
@@ -25,7 +25,7 @@ export const createSpace = createServerFn({ method: 'POST' })
     if(session?.user){
       await db.insert(space).values({
         name: data.name,
-        tags: data.tags,
+        tags: data.tags.join(','),
         createdAt: new Date,
         createdBy: session.user.id,
         updatedAt: null
